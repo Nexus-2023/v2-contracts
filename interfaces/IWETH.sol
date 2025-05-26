@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.6.12;
+pragma solidity ^0.8.24;
 
 interface IWETH {
     function approve(address spender, uint256 value) external returns (bool);

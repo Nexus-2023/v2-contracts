@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.6.12;
+pragma solidity ^0.8.24;
 
 interface IRateModel {
     function getBorrowRate(uint256 cash, uint256 borrows, uint256 reserves) external view returns (uint256);

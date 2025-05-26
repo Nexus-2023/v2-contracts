@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.6.12;
+pragma solidity ^0.8.24;
 pragma experimental ABIEncoderV2;
 
 import "../library/Constant.sol";
@@ -30,6 +30,8 @@ interface ICore {
         uint256 amount,
         uint256 premium
     );
+
+    function keeper() external view returns (address);
 
     function validator() external view returns (address);
 
@@ -83,4 +85,8 @@ interface ICore {
     function transferTokens(address spender, address src, address dst, uint256 amount) external;
 
     function compoundLab(uint256 lockDuration) external;
+
+    function setMarketSupplyCaps(address[] calldata lTokens, uint256[] calldata newSupplyCaps) external;
+
+    function setMarketBorrowCaps(address[] calldata lTokens, uint256[] calldata newSupplyCaps) external;
 }

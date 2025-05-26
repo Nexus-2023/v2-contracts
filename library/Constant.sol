@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.6.12;
+pragma solidity ^0.8.24;
 
 library Constant {
     uint256 public constant CLOSE_FACTOR_MIN = 5e16;
