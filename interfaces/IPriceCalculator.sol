@@ -7,6 +7,10 @@ interface IPriceCalculator {
         uint256 lastUpdated;
     }
 
+    function keeper() external view returns (address);
+
+    function setTokenFeed(address asset, address feed) external ;
+
     function priceOf(address asset) external view returns (uint256);
 
     function pricesOf(address[] memory assets) external view returns (uint256[] memory);

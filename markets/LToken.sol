@@ -2,7 +2,8 @@
 pragma solidity ^0.8.24;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/math/Math.sol";
+import "../library/Math.sol";
+import "../library/SafeMath.sol";
 
 import "../library/SafeToken.sol";
 
@@ -45,7 +46,8 @@ contract LToken is Market {
 
     /* ========== INITIALIZER ========== */
 
-    constructor() public {}
+    constructor() Ownable(msg.sender) {
+    }
 
     function initialize(string memory _name, string memory _symbol, uint8 _decimals) external onlyOwner {
         require(initialized == false, "already initialized");
@@ -158,7 +160,7 @@ contract LToken is Market {
     }
 
     function repayBorrow(address account, uint256 amount) external payable override accrue onlyCore returns (uint256) {
-        if (amount == uint256(-1)) {
+        if (amount == type(uint256).max) {
             amount = borrowBalanceOf(account);
         }
         return _repay(account, account, underlying == address(ETH) ? msg.value : amount);
@@ -180,7 +182,7 @@ contract LToken is Market {
         require(borrower != liquidator, "LToken: cannot liquidate yourself");
         amount = underlying == address(ETH) ? msg.value : amount;
         amount = _repay(liquidator, borrower, amount);
-        require(amount > 0 && amount < uint256(-1), "LToken: invalid repay amount");
+        require(amount > 0 && amount < type(uint256).max, "LToken: invalid repay amount");
 
         (seizeLAmount, rebateLAmount, liquidatorLAmount) = IValidator(core.validator()).lTokenAmountToSeize(
             address(this),
@@ -229,13 +231,13 @@ contract LToken is Market {
             "LToken: cannot transfer"
         );
         require(amount != 0, "LToken: zero amount");
-        uint256 _allowance = spender == src ? uint256(-1) : _transferAllowances[src][spender];
+        uint256 _allowance = spender == src ? type(uint256).max : _transferAllowances[src][spender];
         uint256 _allowanceNew = _allowance.sub(amount, "LToken: transfer amount exceeds allowance");
 
         accountBalances[src] = accountBalances[src].sub(amount);
         accountBalances[dst] = accountBalances[dst].add(amount);
 
-        if (_allowance != uint256(-1)) {
+        if (_allowance != type(uint256).max) {
             _transferAllowances[src][spender] = _allowanceNew;
         }
         emit Transfer(src, dst, amount);

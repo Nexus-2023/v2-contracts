@@ -86,6 +86,13 @@ interface ICore {
 
     function compoundLab(uint256 lockDuration) external;
 
+    function listMarket(
+        address payable lToken,
+        uint256 supplyCap,
+        uint256 borrowCap,
+        uint256 collateralFactor
+    ) external;
+
     function setCollateralFactor(address lToken, uint256 newCollateralFactor) external;
 
     function setMarketSupplyCaps(address[] calldata lTokens, uint256[] calldata newSupplyCaps) external;
